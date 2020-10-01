@@ -557,11 +557,13 @@ public class BlueThermalPrinterPlugin implements MethodCallHandler, RequestPermi
   }
 
   private void printImage(Result result, String pathImage) {
+    Log.v("Piso", "theasdsa file isn't exists");
     if (THREAD == null) {
       result.error("write_error", "not connected", null);
       return;
     }
     try {
+      Log.v("Pisoasd", pathImage);
       Bitmap bmp = BitmapFactory.decodeFile(pathImage);
       if (bmp != null) {
         byte[] command = Utils.decodeBitmap(bmp);

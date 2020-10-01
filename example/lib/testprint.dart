@@ -70,10 +70,10 @@ class TestPrint {
         bluetooth.printImage(pathImage); //path of your image/logo
         bluetooth.printNewLine();
 //      bluetooth.printImageBytes(bytes.buffer.asUint8List(bytes.offsetInBytes, bytes.lengthInBytes));
-        bluetooth.printCustom("Before Arabic", 23, 0) ;
+        bluetooth.printCustom(pathImage, 23, 0) ;
         String testString = " كتابتا اللغه العربية";
         bluetooth.printCustom(testString, 20, 1, charset: "cp1256");
-        bluetooth.printCustom("After Arabic", 23, 0) ;
+        bluetooth.printCustom(pathImage, 23, 0) ;
         bluetooth.printLeftRight("Številka:", "18000001", 1,
             charset: "windows-1250");
         bluetooth.printCustom("Body left", 1, 0);
@@ -88,15 +88,32 @@ class TestPrint {
       }
     });
   }
+  sampleArabicNormal(String pathImage) async {
+//     var response = await http.get("IMAGE_URL");
+//     Uint8List bytes = response.bodyBytes;
+    bluetooth.isConnected.then((isConnected) {
+      if (isConnected) {
+        bluetooth.printCustom(pathImage, 23, 0) ;
+        String testString = " كتابتا اللغه العربية";
+        bluetooth.printCustom(testString, 20, 1);
+        bluetooth.printCustom(pathImage, 23, 0) ;
+        bluetooth.printNewLine();
+        bluetooth.printNewLine();
+        bluetooth.printNewLine();
+        bluetooth.paperCut();
+      }
+    });
+  }
   sampleArabicAloneCp1256(String pathImage) async {
 //     var response = await http.get("IMAGE_URL");
 //     Uint8List bytes = response.bodyBytes;
     bluetooth.isConnected.then((isConnected) {
       if (isConnected) {
-        bluetooth.printCustom("Before Arabic", 23, 0) ;
+        bluetooth.printCustom(pathImage, 23, 0) ;
         String testString = " كتابتا اللغه العربية";
         bluetooth.printCustom(testString, 20, 1, charset: "cp1256");
-        bluetooth.printCustom("After Arabic", 23, 0) ;
+        bluetooth.printCustom(pathImage, 23, 0) ;
+        bluetooth.printNewLine();
         bluetooth.printNewLine();
         bluetooth.printNewLine();
         bluetooth.paperCut();
@@ -108,10 +125,10 @@ class TestPrint {
 //     Uint8List bytes = response.bodyBytes;
     bluetooth.isConnected.then((isConnected) {
       if (isConnected) {
-        bluetooth.printCustom("Before Arabic", 23, 0) ;
+        bluetooth.printCustom(pathImage, 23, 0) ;
         String testString = " كتابتا اللغه العربية";
         bluetooth.printCustom(testString, 20, 1, charset: "cp720");
-        bluetooth.printCustom("After Arabic", 23, 0) ;
+        bluetooth.printCustom(pathImage, 23, 0) ;
         bluetooth.printNewLine();
         bluetooth.printNewLine();
         bluetooth.paperCut();
@@ -123,10 +140,10 @@ class TestPrint {
 //     Uint8List bytes = response.bodyBytes;
     bluetooth.isConnected.then((isConnected) {
       if (isConnected) {
-        bluetooth.printCustom("Before Arabic", 23, 0) ;
+        bluetooth.printCustom(pathImage, 23, 0) ;
         String testString = " كتابتا اللغه العربية";
         bluetooth.printCustom(testString, 20, 1, charset: "cp864");
-        bluetooth.printCustom("After Arabic", 23, 0) ;
+        bluetooth.printCustom(pathImage, 23, 0) ;
         bluetooth.printNewLine();
         bluetooth.printNewLine();
         bluetooth.paperCut();
@@ -138,10 +155,18 @@ class TestPrint {
 //     Uint8List bytes = response.bodyBytes;
     bluetooth.isConnected.then((isConnected) {
       if (isConnected) {
-        bluetooth.printCustom("Before Arabic", 23, 0) ;
-        String testString = " كتابتا اللغه العربية";
-        bluetooth.printCustom(testString, 20, 1, charset: "ISO-8859-6");
-        bluetooth.printCustom("After Arabic", 23, 0) ;
+        bluetooth.printCustom(pathImage, 23, 0) ;
+        String testString = "  كتابتا اللغه العربية";
+        bluetooth.printCustom(testString, 1, 1, charset: "cp1256");
+
+        bluetooth.printCustom("________________________", 2, 0) ;
+
+        bluetooth.printLeftRight("LEFT", "RIGHT", 0);
+        bluetooth.printLeftRight("LEFT", "RIGHT", 1);
+        bluetooth.printNewLine();
+        bluetooth.printLeftRight("LEFT", "RIGHT", 2);
+        bluetooth.printLeftRight("LEFT", "RIGHT", 3);
+        bluetooth.printLeftRight("LEFT", "RIGHT", 4);
         bluetooth.printNewLine();
         bluetooth.printNewLine();
         bluetooth.paperCut();
@@ -203,7 +228,7 @@ class TestPrint {
       }
     });
   }
-  sampleImageBytesLOGg(ByteData   bytes , size ) async {
+  sampleImageBytesLOGg(pathImage /*ByteData   bytes , size*/ ) async {
     //SIZE
     // 0- normal size text
     // 1- only bold text
@@ -220,9 +245,10 @@ class TestPrint {
       if (isConnected) {
 
 
-        bluetooth.printCustom("Bytes $size", 23, 0) ;
-        bluetooth.printImageBytes(bytes.buffer.asUint8List(0, bytes.lengthInBytes));
+        //bluetooth.printCustom("Bytes $size", 23, 0) ;
 
+      bluetooth.printImageBytes(pathImage);
+       // bluetooth.printImage(pathImage);
 
         bluetooth.printNewLine();
 //      bluetooth.printImageBytes(bytes.buffer.asUint8List(bytes.offsetInBytes, bytes.lengthInBytes));
@@ -234,7 +260,7 @@ class TestPrint {
       }
     });
   }
-  sampleSaleBytesLOG(Uint8List bytes) async {
+  sampleSaleBytesLOG(Uint8List bytes,_device) async {
     //SIZE
     // 0- normal size text
     // 1- only bold text
@@ -247,15 +273,17 @@ class TestPrint {
 
 //     var response = await http.get("IMAGE_URL");
 //     Uint8List bytes = response.bodyBytes;
-    //bluetooth.printImageBytes(bytes.buffer.asUint8List(bytes.offsetInBytes, bytes.lengthInBytes));
-
+    //
+    await bluetooth.connect(_device).catchError((error) {
+      return;
+     // setState(() => _connected = false);
+    });
+    //setState(() => _connected = true);
     bluetooth.isConnected.then((isConnected) {
       if (isConnected) {
-
-
         bluetooth.printCustom(" Sales Bytes", 23, 0) ;
-        bluetooth.printImageBytes(bytes);
-
+       // bluetooth.printImageBytes(bytes);
+        bluetooth.printImageBytes(bytes.buffer.asUint8List(bytes.offsetInBytes, bytes.lengthInBytes));
 
         bluetooth.printNewLine();
 //      bluetooth.printImageBytes(bytes.buffer.asUint8List(bytes.offsetInBytes, bytes.lengthInBytes));
@@ -264,8 +292,10 @@ class TestPrint {
         bluetooth.printNewLine();
         bluetooth.printNewLine();
         bluetooth.paperCut();
+        bluetooth.disconnect();
       }
     });
+
   }
 
 

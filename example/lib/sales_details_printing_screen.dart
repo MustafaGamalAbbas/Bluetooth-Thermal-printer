@@ -81,215 +81,218 @@ class Capturer extends StatelessWidget {
       child: OverRepaintBoundary(
         key: overRepaintKey,
         child: RepaintBoundary(
-          child: Column(
-            children: List.generate(
-              1,
-              (i) {
-                return Column(
-                  children: [
-                    Column(
-                      children: [
-                        SalesPrintAttributeWidget(
-                          isEnglish: false,
-                        ),
-                        SalesPrintAttributeWidget(
-                          isEnglish: false,
-                        ),
-                      ],
-                    ),
-                    Container(
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Center(
-                          child: Wrap(
-                            // mainAxisAlignment: MainAxisAlignment.center,
-                            direction: Axis.horizontal,
-                            alignment: WrapAlignment.center,
-                            children: [
-                              Text(
-                                "رفرنس" ,
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                    fontSize: 16, fontWeight: FontWeight.bold),
-                              ),
-                              Text(
-                                "التاريخ ",
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                    fontSize: 16, fontWeight: FontWeight.bold),
-                              ),
-                              Text(
-                               "اسم المستخدم",
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                    fontSize: 16, fontWeight: FontWeight.bold),
-                              ),
-                            ],
+          child: Container(
+            color: Colors.white,
+            child: Column(
+              children: List.generate(
+                1,
+                (i) {
+                  return Column(
+                    children: [
+                      Column(
+                        children: [
+                          SalesPrintAttributeWidget(
+                            isEnglish: false,
                           ),
-                        ),
+                          SalesPrintAttributeWidget(
+                            isEnglish: false,
+                          ),
+                        ],
                       ),
-                    ),
-                    SalesPrintAttributeWidget(
-                      labelKey: ": العميل ",
-                      value: "عميل",
-                      isEnglish: false,
-                    ),
-
-                    SalesItemPrintAttributeWidget(
-                      name: "أسم الطلب ",
-                      price: "السعر",
-                      quantity: "كمية",
-                      total: "الإجمالى",
-
-                      tax: " الضريبة ",
-                      isEnglish: false,
-                    ),
-                    Column(
-                      children: listOfItems(),
-                    ),
-                    Column(
-                            children: [
-                              Align(
-                                alignment: Alignment.centerRight,
-                                child: Text(
-                                  "الاصناف المرتجعة",
-                                  textAlign: TextAlign.right,
+                      Container(
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Center(
+                            child: Wrap(
+                              // mainAxisAlignment: MainAxisAlignment.center,
+                              direction: Axis.horizontal,
+                              alignment: WrapAlignment.center,
+                              children: [
+                                Text(
+                                  "رفرنس" ,
+                                  textAlign: TextAlign.center,
                                   style: TextStyle(
-                                      fontFamily: 'Cairo',
-                                      fontSize: 13,
-                                      fontWeight: FontWeight.bold),
+                                      fontSize: 16, fontWeight: FontWeight.bold),
                                 ),
-                              ),
-                              Padding(
-                                padding:
-                                    const EdgeInsets.symmetric(vertical: 8),
-                                child: Column(
-                                  children: listOfItems(),
+                                Text(
+                                  "التاريخ ",
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                      fontSize: 16, fontWeight: FontWeight.bold),
                                 ),
-                              ),
-                            ],
-                          ),
-                    SalesDetailsPrintAttributeWidget(
-                      isEnglish: false,
-                      total: "المجموع",
-                      discount: "خصم الاصناف",
-                      tax: "نسبة الخصم",
-                    ),
-                    SalesDetailsPrintAttributeWidget(
-                      isEnglish: false,
-                      total: "المجموع",
-                      discount: "خصم الاصناف",
-                      tax: "نسبة الخصم",
-                    ),
-                    Column(
-                      children: [
-                        SalesPrintAttributeWidget(
-                          isEnglish: false,
-                        ),
-                        SalesPrintAttributeWidget(
-                          isEnglish: false,
-                        ),
-                      ],
-                    ),
-                    Container(
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Center(
-                          child: Wrap(
-                            // mainAxisAlignment: MainAxisAlignment.center,
-                            direction: Axis.horizontal,
-                            alignment: WrapAlignment.center,
-                            children: [
-                              Text(
-                                "رفرنس" ,
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                    fontSize: 16, fontWeight: FontWeight.bold),
-                              ),
-                              Text(
-                                "التاريخ ",
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                    fontSize: 16, fontWeight: FontWeight.bold),
-                              ),
-                              Text(
-                                "اسم المستخدم",
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                    fontSize: 16, fontWeight: FontWeight.bold),
-                              ),
-                            ],
+                                Text(
+                                 "اسم المستخدم",
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                      fontSize: 16, fontWeight: FontWeight.bold),
+                                ),
+                              ],
+                            ),
                           ),
                         ),
                       ),
-                    ),
-                    SalesPrintAttributeWidget(
-                      labelKey: ": العميل ",
-                      value: "عميل",
-                      isEnglish: false,
-                    ),
-
-                    SalesItemPrintAttributeWidget(
-                      name: "أسم الطلب ",
-                      price: "السعر",
-                      quantity: "كمية",
-                      total: "الإجمالى",
-
-                      tax: " الضريبة ",
-                      isEnglish: false,
-                    ),
-                    Column(
-                      children: listOfItems(),
-                    ),
-                    Column(
-                      children: [
-                        Align(
-                          alignment: Alignment.centerRight,
-                          child: Text(
-                            "الاصناف المرتجعة",
-                            textAlign: TextAlign.right,
-                            style: TextStyle(
-                                fontFamily: 'Cairo',
-                                fontSize: 13,
-                                fontWeight: FontWeight.bold),
-                          ),
-                        ),
-                        Padding(
-                          padding:
-                          const EdgeInsets.symmetric(vertical: 8),
-                          child: Column(
-                            children: listOfItems(),
-                          ),
-                        ),
-                      ],
-                    ),
-                    SalesDetailsPrintAttributeWidget(
-                      isEnglish: false,
-                      total: "المجموع",
-                      discount: "خصم الاصناف",
-                      tax: "نسبة الخصم",
-                    ),
-                    SalesDetailsPrintAttributeWidget(
-                      isEnglish: false,
-                      total: "المجموع",
-                      discount: "خصم الاصناف",
-                      tax: "نسبة الخصم",
-                    ),
-                    Align(
-                      alignment: Alignment.centerRight,
-                      child: Text(
-                        "شكرا لزيارتكم لنا",
-                        textAlign: TextAlign.right,
-                        style: TextStyle(
-                            fontFamily: 'Cairo',
-                            fontSize: 12,
-                            fontWeight: FontWeight.bold),
+                      SalesPrintAttributeWidget(
+                        labelKey: ": العميل ",
+                        value: "عميل",
+                        isEnglish: false,
                       ),
-                    ),
 
-                  ],
-                );
-              },
+                      SalesItemPrintAttributeWidget(
+                        name: "أسم الطلب ",
+                        price: "السعر",
+                        quantity: "كمية",
+                        total: "الإجمالى",
+
+                        tax: " الضريبة ",
+                        isEnglish: false,
+                      ),
+                      Column(
+                        children: listOfItems(),
+                      ),
+                      Column(
+                              children: [
+                                Align(
+                                  alignment: Alignment.centerRight,
+                                  child: Text(
+                                    "الاصناف المرتجعة",
+                                    textAlign: TextAlign.right,
+                                    style: TextStyle(
+                                        fontFamily: 'Cairo',
+                                        fontSize: 13,
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                ),
+                                Padding(
+                                  padding:
+                                      const EdgeInsets.symmetric(vertical: 8),
+                                  child: Column(
+                                    children: listOfItems(),
+                                  ),
+                                ),
+                              ],
+                            ),
+                      SalesDetailsPrintAttributeWidget(
+                        isEnglish: false,
+                        total: "المجموع",
+                        discount: "خصم الاصناف",
+                        tax: "نسبة الخصم",
+                      ),
+                      SalesDetailsPrintAttributeWidget(
+                        isEnglish: false,
+                        total: "المجموع",
+                        discount: "خصم الاصناف",
+                        tax: "نسبة الخصم",
+                      ),
+                      Column(
+                        children: [
+                          SalesPrintAttributeWidget(
+                            isEnglish: false,
+                          ),
+                          SalesPrintAttributeWidget(
+                            isEnglish: false,
+                          ),
+                        ],
+                      ),
+                      Container(
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Center(
+                            child: Wrap(
+                              // mainAxisAlignment: MainAxisAlignment.center,
+                              direction: Axis.horizontal,
+                              alignment: WrapAlignment.center,
+                              children: [
+                                Text(
+                                  "رفرنس" ,
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                      fontSize: 16, fontWeight: FontWeight.bold),
+                                ),
+                                Text(
+                                  "التاريخ ",
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                      fontSize: 16, fontWeight: FontWeight.bold),
+                                ),
+                                Text(
+                                  "اسم المستخدم",
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                      fontSize: 16, fontWeight: FontWeight.bold),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
+                      SalesPrintAttributeWidget(
+                        labelKey: ": العميل ",
+                        value: "عميل",
+                        isEnglish: false,
+                      ),
+
+                      SalesItemPrintAttributeWidget(
+                        name: "أسم الطلب ",
+                        price: "السعر",
+                        quantity: "كمية",
+                        total: "الإجمالى",
+
+                        tax: " الضريبة ",
+                        isEnglish: false,
+                      ),
+                      Column(
+                        children: listOfItems(),
+                      ),
+                      Column(
+                        children: [
+                          Align(
+                            alignment: Alignment.centerRight,
+                            child: Text(
+                              "الاصناف المرتجعة",
+                              textAlign: TextAlign.right,
+                              style: TextStyle(
+                                  fontFamily: 'Cairo',
+                                  fontSize: 13,
+                                  fontWeight: FontWeight.bold),
+                            ),
+                          ),
+                          Padding(
+                            padding:
+                            const EdgeInsets.symmetric(vertical: 8),
+                            child: Column(
+                              children: listOfItems(),
+                            ),
+                          ),
+                        ],
+                      ),
+                      SalesDetailsPrintAttributeWidget(
+                        isEnglish: false,
+                        total: "المجموع",
+                        discount: "خصم الاصناف",
+                        tax: "نسبة الخصم",
+                      ),
+                      SalesDetailsPrintAttributeWidget(
+                        isEnglish: false,
+                        total: "المجموع",
+                        discount: "خصم الاصناف",
+                        tax: "نسبة الخصم",
+                      ),
+                      Align(
+                        alignment: Alignment.centerRight,
+                        child: Text(
+                          "شكرا لزيارتكم لنا",
+                          textAlign: TextAlign.right,
+                          style: TextStyle(
+                              fontFamily: 'Cairo',
+                              fontSize: 12,
+                              fontWeight: FontWeight.bold),
+                        ),
+                      ),
+
+                    ],
+                  );
+                },
+              ),
             ),
           ),
         ),

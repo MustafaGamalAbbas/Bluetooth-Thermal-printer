@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'dart:io';
-import 'dart:io' as Io;
 import 'dart:typed_data';
 import 'dart:ui' as ui;
 
@@ -12,6 +11,7 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:image/image.dart' as img;
 import 'package:path_provider/path_provider.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 void main() => runApp(new MyApp());
 
@@ -49,12 +49,8 @@ class _MyAppState extends State<MyApp> {
   initSavetoPath() async {
     //read and write
     //image max 300px X 300px
-    final filename = 'arabic.png';
-    bytes = await rootBundle.load("assets/arabic.png");
-    String dir = (await getApplicationDocumentsDirectory()).path;
-    writeToFile(bytes, '$dir/$filename');
 
-    final arabic2 = 'arabic2.png';
+    /* final arabic2 = 'arabic2.png';
     arabic2bytes = await rootBundle.load("assets/arabic2.png");
     String arabic2bytesdirLOGO =
         (await getApplicationDocumentsDirectory()).path;
@@ -67,12 +63,11 @@ class _MyAppState extends State<MyApp> {
     writeToFile(bytesLOGO, '$arabic3bytesdirLOGO/$arabic3');
 
     setState(() {
-      pathImage = '$dir/$filename';
       arabic2pathImage = '$arabic2bytesdirLOGO/$arabic2';
       arabic3pathImage = '$arabic3bytesdirLOGO/$arabic3';
-      pathImage = '$dir/$filename';
+
       // pathImageLOGO = '$dirLOGO/$filenameLOGO';
-    });
+    });*/
   }
 
   Future<void> initPlatformState() async {
@@ -118,6 +113,7 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
+
     return MaterialApp(
       home: Scaffold(
         appBar: AppBar(
@@ -125,11 +121,17 @@ class _MyAppState extends State<MyApp> {
         ),
         body: Stack(
           children: [
-            Capturer(
+            /*Capturer(
               overRepaintKey: globalKey,
             ),
+               displayedImage != null
+                ?  Image.file(File(displayedImage))
+                : Container(
+                    width: 0.0,
+                    height: 0.0,
+                  ),*/
             Container(
-              color: Colors.white,
+              color: Colors.transparent,
               height: double.infinity,
               width: double.infinity,
               child: Padding(
@@ -276,7 +278,7 @@ class _MyAppState extends State<MyApp> {
                             style: TextStyle(color: Colors.white)),
                       ),
                     ),*/
-                    Padding(
+    /*              Padding(
                       padding: const EdgeInsets.only(
                           left: 10.0, right: 10.0, top: 50),
                       child: RaisedButton(
@@ -287,14 +289,16 @@ class _MyAppState extends State<MyApp> {
 
                           RenderRepaintBoundary boundary = renderObject;
                           ui.Image captureImage =
-                              await boundary.toImage(pixelRatio: 1);
+                              await boundary.toImage(pixelRatio: 1.5);
                           final arabic2 = 'sale.png';
-                          arabic2bytes = await captureImage.toByteData(
+                          var arabic4bytes = await captureImage.toByteData(
                               format: ui.ImageByteFormat.png);
-                          String arabic2bytesdirLOGO =
+                          testPrint.sampleSaleBytesLOG(
+                              arabic4bytes.buffer.asUint8List() ,_device);
+                          /*  String arabic2bytesdirLOGO =
                               (await getApplicationDocumentsDirectory()).path;
                           writeToFile(
-                              arabic2bytes, '$arabic2bytesdirLOGO/$arabic2');
+                              arabic4bytes, '$arabic2bytesdirLOGO/$arabic2');*/
 
                           // print("print : "+displayedImage);
 
@@ -321,11 +325,9 @@ class _MyAppState extends State<MyApp> {
                           print("Width : " + thumbnail.width.toString());
                           int x = 0;*/
                           setState(() {
-                            displayedImage = '$arabic2bytesdirLOGO/$arabic2';
+                            // displayedImage = '$arabic2bytesdirLOGO/$arabic2';
                           });
-                          testPrint.sampleSaleBytesLOG(
-                              await new Io.File('$arabic2bytesdirLOGO/$arabic2')
-                                  .readAsBytes());
+
                         },
                         child: Text('PRINT Sale Sample Image TEST',
                             style: TextStyle(color: Colors.white)),
@@ -342,18 +344,49 @@ class _MyAppState extends State<MyApp> {
 
                           RenderRepaintBoundary boundary = renderObject;
                           ui.Image captureImage =
-                              await boundary.toImage(pixelRatio: 1);
-                          final arabic2 = 'sale.png';
-                          arabic2bytes = await captureImage.toByteData(
-                              format: ui.ImageByteFormat.png);
-                          String arabic2bytesdirLOGO =
-                              (await getApplicationDocumentsDirectory()).path;
-                          writeToFile(
-                              arabic2bytes, '$arabic2bytesdirLOGO/$arabic2');
+                              await boundary.toImage(pixelRatio: 1.5);
+                          checkPermission(TargetPlatform.android)
+                              .then((value) async {
+                            if (value) {
+                              var _localPath = ("/sdcard/downloads") +
+                                  Platform.pathSeparator +
+                                  'FekraPOS';
+                              final savedDir = Directory(_localPath);
+
+                              bool hasExisted = await savedDir.exists();
+                              if (!hasExisted) {
+                                await savedDir.create(recursive: true);
+                              }
+
+                              final arabic2 = 'sale.png';
+                              var arabic2bytes = await captureImage.toByteData(
+                                  format: ui.ImageByteFormat.png);
+
+                              Uint8List pngBytes =
+                                  arabic2bytes.buffer.asUint8List();
+                              final img.Image image = img.decodeImage(pngBytes);
+                              print(pngBytes);
+                              File imgFile =
+                                  new File('$_localPath/screenshot.png');
+                              await imgFile.writeAsBytes(
+                                  image.getBytes(format: img.Format.rgba));
+                              await writeToFile(
+                                  arabic2bytes, '$_localPath/$arabic2');
+                              /*var bytes = await rootBundle
+                                .load('$arabic2bytesdirLOGO/$arabic2');
+                            String dir =
+                            (await getApplicationDocumentsDirectory()).path;
+                            await writeToFile(bytes, '$_localPath/$arabic2');*/
+                              setState(() {
+                                displayedImage = '$_localPath/$arabic2';
+                              });
+                              testPrint.sampleImageBytesLOGg(arabic2bytes);
+                            }
+                          });
 
                           // print("print : "+displayedImage);
 
-                          img.Image image = img.decodeImage(
+                          /* img.Image image = img.decodeImage(
                               await new Io.File('$arabic2bytesdirLOGO/$arabic2')
                                   .readAsBytes());
                           print("Before ==> Width : " +
@@ -371,16 +404,16 @@ class _MyAppState extends State<MyApp> {
                               thumbnail.width.toString());
 
                           // Save the thumbnail as a PNG.
-                          new Io.File('$arabic2bytesdirLOGO/$arabic2')
-                            ..writeAsBytesSync(img.encodePng(thumbnail));
+                           var file  = new Io.File('$arabic2bytesdirLOGO/$arabic2') ;
+                           await file.writeAsBytes(img.encodePng(thumbnail));
                           print("Width : " + thumbnail.width.toString());
                           int x = 0;
                           setState(() {
                             displayedImage = '$arabic2bytesdirLOGO/$arabic2';
                           });
-                          testPrint.sampleSaleBytesLOG(
-                              await new Io.File('$arabic2bytesdirLOGO/$arabic2')
-                                  .readAsBytes());
+                          await new Io.File('$arabic2bytesdirLOGO/$arabic2')
+                              .readAsBytes();
+                          testPrint.sampleImageBytesLOGg('$arabic2bytesdirLOGO/$arabic2');*/
                         },
                         child: Text('PRINT Cropped Sale Sample Image TEST',
                             style: TextStyle(color: Colors.white)),
@@ -391,8 +424,14 @@ class _MyAppState extends State<MyApp> {
                           left: 10.0, right: 10.0, top: 50),
                       child: RaisedButton(
                         color: Colors.brown,
-                        onPressed: () {
-                          testPrint.sampleImageBytesLOGg(bytes, "300*lK");
+                        onPressed: () async {
+                          final filename = 'arabic2.png';
+                          bytes = await rootBundle.load("assets/arabic2.png");
+                          String dir =
+                              (await getApplicationDocumentsDirectory()).path;
+
+                          await writeToFile(bytes, '$dir/$filename');
+                          testPrint.sampleImageBytesLOGg('$dir/$filename');
                         },
                         child: Text('PRINT Image 300*1K Bytes TEST',
                             style: TextStyle(color: Colors.white)),
@@ -404,14 +443,13 @@ class _MyAppState extends State<MyApp> {
                       child: RaisedButton(
                         color: Colors.brown,
                         onPressed: () {
-                          testPrint.sampleImageBytesLOGg(
-                              arabic2bytes, "350*600");
+                          testPrint.sampleArabicAloneISO88596("350*600");
                         },
                         child: Text('PRINT Image Bytes 300 TEST',
                             style: TextStyle(color: Colors.white)),
                       ),
                     ),
-                    /*   Padding(
+                       Padding(
                       padding: const EdgeInsets.only(
                           left: 10.0, right: 10.0, top: 50),
                       child: RaisedButton(
@@ -424,20 +462,97 @@ class _MyAppState extends State<MyApp> {
                             style: TextStyle(color: Colors.white)),
                       ),
                     ),*/
+                    Padding(
+                      padding: const EdgeInsets.only(
+                          left: 10.0, right: 10.0, top: 50),
+                      child: RaisedButton(
+                        color: Colors.brown,
+                        onPressed: () {
+                          testPrint.sampleArabicNormal("Normal");
+                        },
+                        child: Text('print Arabic Normal',
+                            style: TextStyle(color: Colors.white)),
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(
+                          left: 10.0, right: 10.0, top: 50),
+                      child: RaisedButton(
+                        color: Colors.brown,
+                        onPressed: () {
+                          testPrint.sampleArabicAloneCp1256("Cp1256");
+                        },
+                        child: Text('Print Arabic Cp1256',
+                            style: TextStyle(color: Colors.white)),
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(
+                          left: 10.0, right: 10.0, top: 50),
+                      child: RaisedButton(
+                        color: Colors.brown,
+                        onPressed: () {
+                          testPrint.sampleArabicAloneISO88596("ISO88596");
+                        },
+                        child: Text('Arabic Alone ISO88596',
+                            style: TextStyle(color: Colors.white)),
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(
+                          left: 10.0, right: 10.0, top: 50),
+                      child: RaisedButton(
+                        color: Colors.brown,
+                        onPressed: () {
+                          testPrint.sampleArabicAlonecp864("Cp864");
+                        },
+                        child: Text('print Arabic Cp864',
+                            style: TextStyle(color: Colors.white)),
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(
+                          left: 10.0, right: 10.0, top: 50),
+                      child: RaisedButton(
+                        color: Colors.brown,
+                        onPressed: () {
+                          testPrint.sampleArabicAlonecp720("Cp720");
+                        },
+                        child: Text('Arabic Alone Cp720',
+                            style: TextStyle(color: Colors.white)),
+                      ),
+                    ),
                   ],
                 ),
               ),
             ),
-            displayedImage != null
-                ? Image.file(File(displayedImage))
-                : Container(
-                    width: 0.0,
-                    height: 0.0,
-                  )
           ],
         ),
       ),
     );
+  }
+
+  Future<bool> checkPermission(TargetPlatform platform) async {
+    if (platform == TargetPlatform.android) {
+      PermissionStatus permission = await PermissionHandler()
+          .checkPermissionStatus(PermissionGroup.storage);
+      if (permission != PermissionStatus.granted) {
+        Map<PermissionGroup, PermissionStatus> permissions =
+            await PermissionHandler()
+                .requestPermissions([PermissionGroup.storage]);
+        if (permissions[PermissionGroup.storage] == PermissionStatus.granted) {
+          return true;
+        } else {
+          return checkPermission(platform);
+        }
+      } else {
+        return true;
+      }
+    }
+    /*else {
+      return true;
+    }*/
+    return false;
   }
 
   List<DropdownMenuItem<BluetoothDevice>> _getDeviceItems() {
